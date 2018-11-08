@@ -1,5 +1,9 @@
-# ignore data files
+# ignore data and binary files
 data/*/*.csv
+data/*/*.gz
+data/*/*.bin
 
 # jupyter checkpoints
 .ipynb_checkpoints
+
+__pycache__
