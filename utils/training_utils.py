@@ -2,11 +2,11 @@ import numpy as np
 from sklearn.model_selection import KFold
 from sklearn.metrics import precision_recall_curve, f1_score, precision_score, recall_score
 from sklearn.metrics import average_precision_score
-from keras.models import clone_model
+from keras.callbacks import ModelCheckpoint
 from utils.keras_utils import RocAucEvaluation
 
 
-def train_model(model, X, Y, validation_data, num_epochs, batch_size, optimizer, loss, metrics, seed=2018):
+def train_model(model, X, Y, validation_data, num_epochs, batch_size, optimizer, loss, metrics, weights_path, seed=2018):
     """[summary]
     
     Arguments:
@@ -31,10 +31,13 @@ def train_model(model, X, Y, validation_data, num_epochs, batch_size, optimizer,
 
     roc_callback_train = RocAucEvaluation((X, Y), output_prefix='train')
     roc_callback_val = RocAucEvaluation(validation_data, output_prefix='val')
-    model.fit(X, Y, validation_data=validation_data, epochs=num_epochs, batch_size=batch_size, \
-        callbacks=[roc_callback_train, roc_callback_val])
 
-    score = model.evaluate(validation_data[0], validation_data[1], batch_size=batch_size)
+    checkpoint = ModelCheckpoint(weights_path, monitor='val_loss', verbose=1, save_best_only=True, save_weights_only=True, mode='min')
+
+    model.fit(X, Y, validation_data=validation_data, epochs=num_epochs, batch_size=batch_size, \
+        callbacks=[checkpoint, roc_callback_train, roc_callback_val])
+
+    #score = model.evaluate(validation_data[0], validation_data[1], batch_size=batch_size)
     predictions = model.predict(validation_data[0], batch_size=batch_size)
 
     return model, predictions

@@ -1,7 +1,8 @@
 # ignore data and binary files
-data/*/*.csv
-data/*/*.gz
-data/*/*.bin
+data/**/*.csv
+data/**/*.gz
+data/**/*.bin
+data/**/*.hdf5
 
 # jupyter checkpoints
 .ipynb_checkpoints

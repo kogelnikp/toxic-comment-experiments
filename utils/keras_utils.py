@@ -17,4 +17,6 @@ class RocAucEvaluation(Callback):
         if epoch % self.interval == 0:
             y_pred = self.model.predict(self.X_val, verbose=0)
             score = roc_auc_score(self.y_val, y_pred)
-            print("\n {}: ROC-AUC - epoch: {:d} - score: {:.6f}".format(self.output_prefix, epoch, score))
+            s_cl = roc_auc_score(self.y_val, y_pred, average=None)
+            print("\n {}: ROC-AUC - epoch: {:d} - score: {:.6f}".format(self.output_prefix, epoch+1, score))
+            print(" Tox: {} - STox: {} - Obs: {} - Thr: {} - Ins: {} - IdH: {}".format(s_cl[0], s_cl[1], s_cl[2], s_cl[3], s_cl[4], s_cl[5]))            
