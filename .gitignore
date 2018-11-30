@@ -3,6 +3,7 @@ data/**/*.csv
 data/**/*.gz
 data/**/*.bin
 data/**/*.hdf5
+data/**/*.npy
 
 # jupyter checkpoints
 .ipynb_checkpoints
