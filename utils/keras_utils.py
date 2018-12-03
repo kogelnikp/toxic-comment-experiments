@@ -4,7 +4,7 @@ from keras.callbacks import Callback
 
 class RocAucEvaluation(Callback):
     """Keras callback class for ROC AUC evaluation.
-    Taken from: https://www.kaggle.com/yekenot/pooled-gru-fasttext    
+    Based on: https://www.kaggle.com/yekenot/pooled-gru-fasttext    
     The scores can be retrieved from self.scores where it is stored in the following format:
           | ROC AUC | F1      |
     Avg   |         |         |
