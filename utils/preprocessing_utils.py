@@ -1,6 +1,7 @@
 import string
 import pickle
 import os.path
+import re
 from keras.preprocessing.sequence import pad_sequences
 from nltk.tokenize import TweetTokenizer
 
@@ -38,8 +39,8 @@ def remove_punctuation(X):
     Returns:
         DataFrame -- The dataset with all punctuation removed
     """
-    translation_table = str.maketrans(',', ',', string.punctuation)
-    return X.apply(lambda x: x.translate(translation_table))
+    pattern = '[^A-Za-z0-9\\s -]'
+    return X.apply(lambda x: re.sub(pattern, '', x))
 
 
 def remove_punctuation_weak(X):
@@ -51,7 +52,6 @@ def remove_punctuation_weak(X):
     Returns:
         DataFrame -- The dataset with all punctuation except ,.!? removed
     """
-    char_filter = ''.join([i for i in string.punctuation if i not in '.,!?'])
-    translation_table = str.maketrans(',', ',', char_filter)
-    return X.apply(lambda x: x.translate(translation_table))
+    pattern = '[^A-Za-z0-9\\s,!?\\. -]'
+    return X.apply(lambda x: re.sub(pattern, '', x))
 
