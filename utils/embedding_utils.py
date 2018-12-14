@@ -23,8 +23,8 @@ def load_word2vec_embeddings(path):
     en_model = KeyedVectors.load_word2vec_format(path, binary=True)
     embeddings_index = en_model.wv
     all_embeddings = np.stack(embeddings_index.syn0)
-    embedding_mean,embedding_std = all_embeddings.mean(), all_embeddings.std()
     del en_model
+    embedding_mean,embedding_std = all_embeddings.mean(), all_embeddings.std()
     return embeddings_index, embedding_mean, embedding_std
 
 def load_fasttext_embeddings(path):

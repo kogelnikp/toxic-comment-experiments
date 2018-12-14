@@ -86,6 +86,32 @@ def perform_lemmatization(X):
     return X.apply(lambda x: [lemmatizer.lemmatize(tok) for tok in x])
 
 
-def replace_unknown_tokens(X):
+def replace_unknown_tokens(X, dictionary):
+    """ Replaces all tokens which are not in the given dictionary with an UNK token
+    
+    Arguments:
+        X {DataFrame} -- the data set to be transformed
+        dictionary {dict} -- the dictionary
+    
+    Returns:
+        DataFrame -- the transformed data set
+    """
 
-    return X
+    return X.apply(lambda x: [replace_unknown_token(tok, dictionary) for tok in x])
+
+
+def replace_unknown_token(token, dictionary):
+    """ Checks whether the token is in the given dictionary.
+    If not it is replaced by an UNK token
+    
+    Arguments:
+        token {string} -- the token to be checked and eventually replaced
+        dictionary {dict} -- the dictionary
+    
+    Returns:
+        string -- the new token
+    """
+
+    if token not in dictionary:
+        return "_unk_"
+    return token
