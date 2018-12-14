@@ -4,6 +4,8 @@ import os.path
 import re
 from keras.preprocessing.sequence import pad_sequences
 from nltk.tokenize import TweetTokenizer
+from nltk.stem import SnowballStemmer
+from nltk.stem.wordnet import WordNetLemmatizer
 
 
 def convert_tokens_to_padded_sequence(X_tokenized, word_embedding_mapping, max_length):
@@ -55,3 +57,35 @@ def remove_punctuation_weak(X):
     pattern = '[^A-Za-z0-9\\s,!?\\. -]'
     return X.apply(lambda x: re.sub(pattern, '', x))
 
+
+def perform_stemming(X):
+    """ Performs stemming on the whole data set
+    
+    Arguments:
+        X {DataFrame} -- the data set to be stemmed
+    
+    Returns:
+        DataFrame -- The stemmed data set
+    """
+
+    stemmer = SnowballStemmer("english")
+    return X.apply(lambda x: [stemmer.stem(tok) for tok in x])
+
+
+def perform_lemmatization(X):
+    """ Performs lemmatization on the whole data set
+    
+    Arguments:
+        X {DataFrame} -- the data set to be lemmatized
+    
+    Returns:
+        DataFrame -- The lemmatized data set
+    """
+
+    lemmatizer = WordNetLemmatizer()
+    return X.apply(lambda x: [lemmatizer.lemmatize(tok) for tok in x])
+
+
+def replace_unknown_tokens(X):
+
+    return X
