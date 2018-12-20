@@ -42,7 +42,7 @@ def remove_punctuation(X):
         DataFrame -- The dataset with all punctuation removed
     """
     pattern = '[^A-Za-z0-9\\s -]'
-    return X.apply(lambda x: re.sub(pattern, '', x))
+    return X.apply(lambda x: re.sub(pattern, ' ', x))
 
 
 def remove_punctuation_weak(X):
@@ -55,7 +55,7 @@ def remove_punctuation_weak(X):
         DataFrame -- The dataset with all punctuation except ,.!? removed
     """
     pattern = '[^A-Za-z0-9\\s,!?\\. -]'
-    return X.apply(lambda x: re.sub(pattern, '', x))
+    return X.apply(lambda x: re.sub(pattern, ' ', x))
 
 
 def perform_stemming(X):
