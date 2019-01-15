@@ -17,7 +17,14 @@ def convert_tokens_to_padded_sequence(X_tokenized, word_embedding_mapping, max_l
     word_embedding_mapping -- the mapping from a token to the index in the embedding matrix
     max_length -- the resulting length of each text
     """
-    X_sequence = X_tokenized.apply(lambda comment: [word_embedding_mapping[token] for token in comment])
+    def get_indices_array(comment):
+        result = []
+        for token in comment:
+            if token in word_embedding_mapping:
+                result.append(word_embedding_mapping[token])
+        return result
+
+    X_sequence = X_tokenized.apply(lambda comment: get_indices_array(comment))
     X_result = pad_sequences(X_sequence, max_length)
     return X_result
 

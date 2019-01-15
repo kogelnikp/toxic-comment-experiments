@@ -6,7 +6,7 @@ from sklearn.metrics import precision_recall_curve, f1_score, precision_score, r
 from sklearn.metrics import average_precision_score
 from keras.callbacks import ModelCheckpoint
 from keras.models import clone_model
-from utils.keras_utils import RocAucEvaluation
+from utils.keras_utils import RocAucEvaluation, DataSet
 
 
 def train_model(model, X, Y, validation_data, num_epochs, batch_size, optimizer, loss, metrics, weights_path, seed=2018):
@@ -46,7 +46,7 @@ def train_model(model, X, Y, validation_data, num_epochs, batch_size, optimizer,
     return model, predictions
 
 
-def train_and_evaluate_model(model_template, X, Y, validation_data, num_epochs, batch_size, optimizer, loss, metrics, weights_path=None, write_model_checkpoints=False, runs=10, seed=2018):
+def train_and_evaluate_model(model_template, X, Y, validation_data, num_epochs, batch_size, optimizer, loss, metrics, weights_path=None, write_model_checkpoints=False, runs=10, seed=2018, dataset=DataSet.KAGGLE):
     """trains and evaluates the given model for the specified number of runs
     and returns the scores in the following format:
     format: [run, train/val, epoch, class, metric]
@@ -74,8 +74,8 @@ def train_and_evaluate_model(model_template, X, Y, validation_data, num_epochs, 
     Returns:
         numpy array -- train and test scores for each run and epoch
     """
-
-    scores = np.zeros((runs, 2, num_epochs, 7, 2))
+    
+    scores = np.zeros((runs, 2, num_epochs, Y.shape[1]+1, 2))
 
     for run in range(runs):
         print("RUN {}/{}".format(run+1, runs))
@@ -84,8 +84,8 @@ def train_and_evaluate_model(model_template, X, Y, validation_data, num_epochs, 
             model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
             callbacks = []
-            roc_callback_train = RocAucEvaluation((X, Y), output_prefix='train')
-            roc_callback_val = RocAucEvaluation(validation_data, output_prefix='val')
+            roc_callback_train = RocAucEvaluation((X, Y), output_prefix='train', dataset=dataset)
+            roc_callback_val = RocAucEvaluation(validation_data, output_prefix='val', dataset=dataset)
             callbacks.append(roc_callback_train)
             callbacks.append(roc_callback_val)
 
