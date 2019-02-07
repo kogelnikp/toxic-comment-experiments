@@ -5,4 +5,5 @@ The experiments are intended to help answering the following questions:
 
 * How suitable are different CNN architectures for the toxic comment classification task?
 * Which preprocessing steps are beneficial for this type of problem?
-* Which features do CNNs learn when being trained on this data?
+* Which patterns do CNNs learn and which features are important for the classification when being trained on this data?
+* Do CNNs work equally well when being applied to data coming from different sources?
